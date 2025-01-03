@@ -30,13 +30,7 @@ function readSinhviensFromJson(filePath) {
 }
 
 // Đọc danh sách sinh viên từ file JSON
-let sinhviens = readSinhviensFromJson("dataStudent.json");
-
-// Sử dụng hash map để lưu trữ sinh viên theo MSSV (Tìm kiếm nhanh O(1))
-const sinhvienMap = new Map(sinhviens.map(sv => [sv.mssv, sv]));
-
-// Duy trì danh sách đã sắp xếp theo CPA (giảm thiểu việc sắp xếp lại)
-let sortedSinhviens = [...sinhviens].sort((a, b) => b.cpa - a.cpa);
+const sinhviens = readSinhviensFromJson("dataStudent.json");
 
 function listSinhviens() {
     sinhviens.forEach(sinhvien => {
@@ -44,9 +38,9 @@ function listSinhviens() {
     });
 }
 
-// Tìm sinh viên theo MSSV với độ phức tạp O(1)
+// Chức năng 1: Tìm sinh viên theo MSSV
 function findSinhvien(mssv) {
-    const sinhvien = sinhvienMap.get(mssv);
+    const sinhvien = sinhviens.find(sinhvien => sinhvien.mssv === mssv);
     if (sinhvien) {
         console.log(`${sinhvien.mssv} "${sinhvien.name}" ${sinhvien.cpa} ${sinhvien.canhcao}`);
         return sinhvien;
@@ -56,35 +50,34 @@ function findSinhvien(mssv) {
     }
 }
 
-// Cập nhật CPA của sinh viên
+// Chức năng 2: Cập nhật CPA của sinh viên
 function modifyCpa(mssv, newCpa) {
     const sinhvien = findSinhvien(mssv);
     if (sinhvien) {
         sinhvien.updateCpa(newCpa);
         console.log(`Updated CPA of ${sinhvien.name} to ${sinhvien.cpa}`);
-
-        // Cập nhật lại danh sách đã sắp xếp
-        sortedSinhviens = [...sinhviens].sort((a, b) => b.cpa - a.cpa);
     } else {
         console.log("Sinh viên không tìm thấy.");
     }
 }
 
-// Tìm sinh viên có CPA cao nhất, đã sắp xếp nên chỉ cần lấy đầu danh sách
+// Chức năng 3: Tìm sinh viên có CPA cao nhất
 function findTop(n) {
+    const sortedSinhviens = [...sinhviens].sort((a, b) => b.cpa - a.cpa);
     sortedSinhviens.slice(0, n).forEach(sinhvien => {
         console.log(sinhvien.mssv);
     });
 }
 
-// Tìm sinh viên có CPA thấp nhất, đã sắp xếp nên lấy cuối danh sách
+// Chức năng 4: Tìm sinh viên có CPA thấp nhất
 function findBottom(n) {
-    sortedSinhviens.slice(-n).forEach(sinhvien => {
+    const sortedSinhviens = [...sinhviens].sort((a, b) => a.cpa - b.cpa);
+    sortedSinhviens.slice(0, n).forEach(sinhvien => {
         console.log(sinhvien.mssv);
     });
 }
 
-// Tìm sinh viên bị cảnh cáo (lọc sinh viên bị cảnh cáo với độ phức tạp O(n))
+// Chức năng 5: Tìm sinh viên bị cảnh cáo
 function findWarningSinhviens() {
     sinhviens
         .filter(sinhvien => sinhvien.canhcao > 0)
@@ -93,20 +86,20 @@ function findWarningSinhviens() {
         });
 }
 
-// Đếm số sinh viên có CPA trong khoảng [a, b]
+// Chức năng 6: Đếm số sinh viên có CPA trong khoảng [a, b]
 function countSinhviensInRange(a, b) {
     const count = sinhviens.filter(sinhvien => sinhvien.cpa >= a && sinhvien.cpa <= b).length;
     console.log(`Số sinh viên có CPA trong khoảng [${a}, ${b}]: ${count}`);
 }
 
-// Đếm số sinh viên bị đình chỉ học (cảnh cáo mức 3)
+// Chức năng 7: Đếm số sinh viên bị đình chỉ học
 function countSuspendedSinhviens() {
     const suspended = sinhviens.filter(sinhvien => sinhvien.canhcao === 3);
     console.log(`Số sinh viên bị đình chỉ học: ${suspended.length}`);
     return suspended.length;
 }
 
-// Khởi tạo giao diện dòng lệnh
+// Chức năng 8: Đếm số sinh viên bị cảnh cáo
 const rl = readline.createInterface({
     input: process.stdin,
     output: process.stdout,
@@ -199,4 +192,11 @@ function main() {
             4. findtop <n> // Ví dụ: findtop 3
             5. findbottom <n> // Ví dụ: findbottom 3
             6. findcanhcao
+            7. cnt <a> <b>  // Ví dụ: cnt 2.5 3.5
+            8. suspended
+            9. exit
+            `);
+    });
+}
 
+main();
