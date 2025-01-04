@@ -5,7 +5,7 @@ class Sinhvien {
     constructor(mssv, name, cpa) {
         this.mssv = mssv;
         this.name = name;
-        this.cpa = parseFloat(cpa); // Chuyển đổi cpa từ chuỗi sang số
+        this.cpa = parseFloat(cpa); 
         this.canhcao = this.getCanhcao();
     }
 
@@ -17,27 +17,22 @@ class Sinhvien {
     }
 
     updateCpa(newCpa) {
-        this.cpa = parseFloat(newCpa); // Chuyển đổi cpa từ chuỗi sang số
+        this.cpa = parseFloat(newCpa); 
         this.canhcao = this.getCanhcao();
     }
 }
 
-// Hàm để đọc danh sách sinh viên từ file JSON
 function readSinhviensFromJson(filePath) {
     const data = fs.readFileSync(filePath, "utf8");
     const jsonData = JSON.parse(data);
     return jsonData.map(sv => new Sinhvien(sv.mssv, sv.name, sv.cpa));
 }
-
-// Đọc danh sách sinh viên từ file JSON
 const sinhviens = readSinhviensFromJson("dataStudent.json");
-
 function listSinhviens() {
     sinhviens.forEach(sinhvien => {
         console.log(`${sinhvien.mssv} - ${sinhvien.name}`);
     });
 }
-
 // Chức năng 1: Tìm sinh viên theo MSSV
 function findSinhvien(mssv) {
     const sinhvien = sinhviens.find(sinhvien => sinhvien.mssv === mssv);
