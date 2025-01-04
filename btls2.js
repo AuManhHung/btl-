@@ -21,7 +21,7 @@ class Sinhvien {
         this.canhcao = this.getCanhcao();
     }
 }
-
+// Chức năng 1: list
 function readSinhviensFromJson(filePath) {
     const data = fs.readFileSync(filePath, "utf8");
     const jsonData = JSON.parse(data);
@@ -33,7 +33,7 @@ function listSinhviens() {
         console.log(`${sinhvien.mssv} - ${sinhvien.name}`);
     });
 }
-// Chức năng 1: Tìm sinh viên theo MSSV
+// Chức năng 2: Tìm sinh viên theo MSSV
 function findSinhvien(mssv) {
     const sinhvien = sinhviens.find(sinhvien => sinhvien.mssv === mssv);
     if (sinhvien) {
@@ -45,7 +45,7 @@ function findSinhvien(mssv) {
     }
 }
 
-// Chức năng 2: Cập nhật CPA của sinh viên
+// Chức năng 3: Cập nhật CPA của sinh viên
 function modifyCpa(mssv, newCpa) {
     const sinhvien = findSinhvien(mssv);
     if (sinhvien) {
@@ -56,7 +56,7 @@ function modifyCpa(mssv, newCpa) {
     }
 }
 
-// Chức năng 3: Tìm sinh viên có CPA cao nhất
+// Chức năng 4: Tìm sinh viên có CPA cao nhất
 function findTop(n) {
     const sortedSinhviens = [...sinhviens].sort((a, b) => b.cpa - a.cpa);
     sortedSinhviens.slice(0, n).forEach(sinhvien => {
@@ -64,7 +64,7 @@ function findTop(n) {
     });
 }
 
-// Chức năng 4: Tìm sinh viên có CPA thấp nhất
+// Chức năng 5: Tìm sinh viên có CPA thấp nhất
 function findBottom(n) {
     const sortedSinhviens = [...sinhviens].sort((a, b) => a.cpa - b.cpa);
     sortedSinhviens.slice(0, n).forEach(sinhvien => {
@@ -72,7 +72,7 @@ function findBottom(n) {
     });
 }
 
-// Chức năng 5: Tìm sinh viên bị cảnh cáo
+// Chức năng 6: Tìm sinh viên bị cảnh cáo
 function findWarningSinhviens() {
     sinhviens
         .filter(sinhvien => sinhvien.canhcao > 0)
@@ -81,25 +81,18 @@ function findWarningSinhviens() {
         });
 }
 
-// Chức năng 6: Đếm số sinh viên có CPA trong khoảng [a, b]
+// Chức năng 7: Đếm số sinh viên có CPA trong khoảng [a, b]
 function countSinhviensInRange(a, b) {
     const count = sinhviens.filter(sinhvien => sinhvien.cpa >= a && sinhvien.cpa <= b).length;
     console.log(`Số sinh viên có CPA trong khoảng [${a}, ${b}]: ${count}`);
 }
 
-// Chức năng 7: Đếm số sinh viên bị đình chỉ học
+// Chức năng 8: Đếm số sinh viên bị đình chỉ học
 function countSuspendedSinhviens() {
     const suspended = sinhviens.filter(sinhvien => sinhvien.canhcao === 3);
     console.log(`Số sinh viên bị đình chỉ học: ${suspended.length}`);
     return suspended.length;
 }
-
-// Chức năng 8: Đếm số sinh viên bị cảnh cáo
-const rl = readline.createInterface({
-    input: process.stdin,
-    output: process.stdout,
-});
-
 function main() {
     console.log("Quản lý sinh viên - Nhập lệnh:");
     console.log(`Lệnh hỗ trợ:
